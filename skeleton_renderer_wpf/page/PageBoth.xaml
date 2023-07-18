@@ -1,0 +1,17 @@
+﻿<Page x:Class="skeleton_renderer_wpf.page.PageBoth"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:skeleton_renderer_wpf"
+      mc:Ignorable="d" 
+      Height="Auto" Width="Auto"
+      Title="PageBoth" Loaded="Page_Loaded">
+
+    <Grid>
+
+        <Frame x:Name="frame_grid" Content="Frame" HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="400" NavigationUIVisibility="Hidden"/>
+        <Frame x:Name="frame_skeleton" Content="Frame" HorizontalAlignment="Left" Height="450" Margin="400,0,0,0" VerticalAlignment="Top" Width="400" NavigationUIVisibility="Hidden"/>
+
+    </Grid>
+</Page>
