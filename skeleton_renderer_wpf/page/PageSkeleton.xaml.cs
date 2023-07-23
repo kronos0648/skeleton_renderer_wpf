@@ -27,8 +27,7 @@ namespace skeleton_renderer_wpf.page
     /// </summary>
     public partial class PageSkeleton : Page
     {
-        private List<DerivedData> dData;
-        public DerivedEvent derivedEvent;
+        private Client client;
 
         private Viewport3D viewport3D;
         private PerspectiveCamera perspectiveCamera;
@@ -37,19 +36,15 @@ namespace skeleton_renderer_wpf.page
         private GeometryModel3D geometryModel3D;
         private ModelVisual3D modelVisual3D;
 
-        public PageSkeleton()
+        public PageSkeleton(Client client)
         {
             InitializeComponent();
-            
+            this.client = client;
             this.viewport3D = new Viewport3D();
             Content = grid;
             grid.Children.Add(this.viewport3D);
             this.perspectiveCamera = GetPerspectiveCamera(new Point3D(15, 20, 15), new Vector3D(-1, -1, -1), new Vector3D(0, 1, 0), 100);
             viewport3D.Camera = perspectiveCamera;
-
-
-            this.derivedEvent = new DerivedEvent();
-            this.derivedEvent.OnDerived += new EventHandler(OnDerived);
             
         }
 
@@ -101,15 +96,6 @@ namespace skeleton_renderer_wpf.page
             }
         }
 
-
-        private void OnDerived(object sender, EventArgs e)
-        {
-            dData = ((DerivedEventArgs)e).data;
-            float vX = dData[0].vX;
-            float vY = dData[0].vY;
-            float vZ = dData[0].vZ;
-            
-        }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {

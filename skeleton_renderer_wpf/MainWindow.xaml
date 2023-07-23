@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:skeleton_renderer_wpf"
         mc:Ignorable="d"
-        Title="Skeleton Renderer" Height="669.065" Width="1411.144">
+        Title="Skeleton Renderer" Height="669.065" Width="2011.154">
     <Grid>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="145" Margin="10,10,0,0" VerticalAlignment="Top" Width="312"/>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="145" Margin="341,10,0,0" VerticalAlignment="Top" Width="166"/>
@@ -27,7 +27,7 @@
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="468" Margin="245,160,0,0" VerticalAlignment="Top" Width="262"/>
         <Label Content="Sensor Attached Model" HorizontalAlignment="Left" Margin="255,168,0,0" VerticalAlignment="Top"/>
         <Label Content="여기다가 WPF 2D 모델" HorizontalAlignment="Left" Margin="277,386,0,0" VerticalAlignment="Top"/>
-        <Frame x:Name="frame_content" Content="Page" HorizontalAlignment="Left" Height="616" Margin="512,12,0,0" VerticalAlignment="Top" Width="881
+        <Frame x:Name="frame_content" Content="Page" HorizontalAlignment="Left" Height="616" Margin="512,12,0,0" VerticalAlignment="Top" Width="1400
                " NavigationUIVisibility="Hidden"/>
 
     </Grid>

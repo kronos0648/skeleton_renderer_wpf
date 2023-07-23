@@ -17,6 +17,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
+using System.Windows.Threading;
 
 using skeleton_renderer_wpf.module;
 using skeleton_renderer_wpf.page;
@@ -45,28 +46,28 @@ namespace skeleton_renderer_wpf
     {
         private Client client;
         private Thread tcp_thread;
-        private DerivedEvent derivedEvent;
 
         private PageBoth pageBoth;
         private PageGrid pageGrid;
         private PageSkeleton pageSkeleton;
 
-        private ObservableCollection<string> bodyParts;
+        private DispatcherTimer timer_bodyparts;
         
 
         public MainWindow()
         {
             InitializeComponent();
-            pageGrid = new PageGrid();
-            pageSkeleton = new PageSkeleton();
-            
-            derivedEvent = new DerivedEvent();
-            derivedEvent.OnDerived += new EventHandler(OnDerived);
-            client = new Client(derivedEvent, pageGrid.derivedEvent, pageSkeleton.derivedEvent);
+
+            client = new Client();
+            pageGrid = new PageGrid(client);
+            pageSkeleton = new PageSkeleton(client);
             txt_ip.Text = "192.168.1.168";
-            txt_port.Text = "7000";
-            
-            
+            txt_port.Text = "8000";
+            timer_bodyparts = new DispatcherTimer();
+            timer_bodyparts.Tick += BodyPartTimer_Tick;
+            timer_bodyparts.Interval = TimeSpan.FromMilliseconds(1000);
+            timer_bodyparts.Start();
+
         }
 
         private void btn_connect_Click(object sender, RoutedEventArgs e)
@@ -124,7 +125,6 @@ namespace skeleton_renderer_wpf
                             ));
                         }
                     }
-                    
                 }
                 ));
                 tcp_thread.Start();
@@ -136,7 +136,16 @@ namespace skeleton_renderer_wpf
                 lb_hasCon.Content = "Not Connected";
                 lb_hasCon.Background = Brushes.Red;
             }
+        }
 
+        private async void BodyPartTimer_Tick(object sender,EventArgs e)
+        {
+            var _bodyDatas = await GetDatasAsync(1, client.currentData);
+            list_bodypart.Dispatcher.Invoke(new Action(delegate
+            {
+                list_bodypart.ItemsSource = _bodyDatas;
+            }
+            ));
         }
 
         private async void OnDerived(object sender, EventArgs e)
@@ -148,7 +157,6 @@ namespace skeleton_renderer_wpf
                 list_bodypart.ItemsSource = _bodyDatas;
             }
             ));
-            
         }
 
         private async Task<IList<string>> GetDatasAsync(int sleep,List<DerivedData> _dDatas)

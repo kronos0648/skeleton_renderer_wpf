@@ -27,28 +27,26 @@ namespace skeleton_renderer_wpf.page
     /// </summary>
     public partial class PageGrid : Page
     {
-        public DerivedEvent derivedEvent;
+        private DispatcherTimer timer;
 
-        public PageGrid()
+        private Client client;
+
+        public PageGrid(Client client)
         {
             InitializeComponent();
-            this.derivedEvent = new DerivedEvent();
-            this.derivedEvent.OnDerived += new EventHandler(OnDerived);
-
+            this.client = client;
             grid_derivedData.AutoGenerateColumns = false;
-            
             grid_derivedData.CanUserAddRows = false;
-            //grid_derivedData.bin
-
-            DataGridTextColumn[] cols = new DataGridTextColumn[8];
+            string[] str_binding = { "time", "part", "roll", "pitch", "yaw", "accX", "accY", "accZ", "gyroX", "gyroY", "gyroZ", "vX", "vY", "vZ", "dX", "dY", "dZ" };
+            string[] str_header = { "시각", "부위", "Roll", "Pitch", "Yaw", "accX", "accY", "accZ", "gyroX", "gyroY", "gyroZ", "vX", "vY", "vZ", "dX", "dY", "dZ" };
+            DataGridTextColumn[] cols = new DataGridTextColumn[str_header.Length];
             for(int i=0;i<cols.Length;i++)
             {
                 DataGridTextColumn col = new DataGridTextColumn();
                 grid_derivedData.Columns.Add(col);
                 cols[i] = col;
             }
-            string[] str_binding = { "time","part","roll","pitch","yaw","vX","vY","vZ" };
-            string[] str_header = { "시각", "부위", "Roll", "Pitch", "Yaw", "vX", "vY", "vZ" };
+            
             for(int i=0;i<cols.Length;i++)
             {
                 Binding binding = new Binding(str_binding[i]);
@@ -57,7 +55,22 @@ namespace skeleton_renderer_wpf.page
                 cols[i].Header = str_header[i];
                 cols[i].IsReadOnly = true;
             }
+            timer = new DispatcherTimer();
+            timer.Tick += Timer_Tick;
+            timer.Interval = TimeSpan.FromMilliseconds(500);
+            timer.Start();
         }
+
+        private async void Timer_Tick(object sender,EventArgs e)
+        {
+            var _datas = await GetDatasAsync(1, client.currentData);
+            grid_derivedData.Dispatcher.Invoke(new Action(delegate
+            {
+                grid_derivedData.ItemsSource = _datas;
+            }
+            ));
+        }
+
 
 
         private async Task<IList<DerivedData>> GetDatasAsync(int sleep, List<DerivedData> _dDatas)
@@ -68,6 +81,7 @@ namespace skeleton_renderer_wpf.page
             {
                 _datas.Add(dData);
             }
+            _datas = _datas.OrderBy(x => x.part).ToList();
             return _datas;
         }
 

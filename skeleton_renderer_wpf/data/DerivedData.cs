@@ -13,23 +13,19 @@ namespace skeleton_renderer_wpf.data
         public float roll { get; set; }
         public float pitch { get; set; }
         public float yaw { get; set; }
+
+        public float accX { get; set; }
+        public float accY { get; set; }
+        public float accZ { get; set; }
+        public float gyroX { get; set; }
+        public float gyroY { get; set; }
+        public float gyroZ { get; set; }
         public float vX { get; set; }
         public float vY { get; set; }
         public float vZ { get; set; }
-
-        public object[] GetRow()
-        {
-            object[] row = new object[8];
-            row[0] = time;
-            row[1] = part;
-            row[2] = roll;
-            row[3] = pitch;
-            row[4] = yaw;
-            row[5] = vX;
-            row[6] = vY;
-            row[7] = vZ;
-            return row;
-        }
+        public float dX { get; set; }
+        public float dY { get; set; }
+        public float dZ { get; set; }
 
     }
 }
